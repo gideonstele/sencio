@@ -1,0 +1,11 @@
+[browser]
+last 10 Chrome versions
+last 10 Edge versions
+last 10 Firefox versions
+last 3 Android versions
+last 3 ChromeAndroid versions
+last 2 Safari major versions
+last 2 iOS major versions
+
+[ssr]
+node >= 16

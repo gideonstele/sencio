@@ -1,0 +1,65 @@
+{
+  "name": "breezystack",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Breezy is a collection of React components for building web applications.",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "build": "tsx ./scripts/build.ts",
+    "build:all": "tsx ./scripts/build.ts --all",
+    "clean": "pnpm clean:module && pnpm clean:dist",
+    "clean:module": "pnpm -r exec -- rm -rf node_modules",
+    "clean:dist": "pnpm -r exec -- rm -rf dist",
+    "release": "echo \"todo...\" && exit 1",
+    "test": "echo \"todo...\" && exit 1"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shijinyu/breezystack.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shijinyu/breezystack/issues"
+  },
+  "homepage": "https://github.com/shijinyu/breezystack#readme",
+  "dependencies": {
+    "env-cmd": "^10.1.0",
+    "eslint": "^8.40.0",
+    "prettier": "^3",
+    "stylelint": "^15.6.2",
+    "typescript": "^5.0.4"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.6.3",
+    "@commitlint/config-conventional": "^17.6.3",
+    "@typescript-eslint/eslint-plugin": "^5.59.6",
+    "@typescript-eslint/parser": "^5.59.6",
+    "base-lints": "workspace:*",
+    "commitlint": "^17.6.3",
+    "cross-env": "^7.0.3",
+    "husky": "^8.0.0",
+    "is-ci": "^3.0.1",
+    "lint-staged": "^13.2.2"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "@babel/core",
+        "@types/bluebird",
+        "ts-toolbelt"
+      ],
+      "allowedVersions": {
+        "react": "^17.0.0 || ^18.0.0",
+        "react-dom": "^17.0.0 || ^18.0.0",
+        "@types/react": "^17.0.0 || ^18.0.0",
+        "@types/react-dom": "^17.0.0 || ^18.0.0"
+      }
+    }
+  },
+  "volta": {
+    "node": "20.4.0",
+    "pnpm": "8.6.7"
+  }
+}
