@@ -1,3 +1,3 @@
-const config = require('./packages/_lint/prettier.config');
+const config = require('./packages/_base-lints/prettier');
 
 module.exports = config;

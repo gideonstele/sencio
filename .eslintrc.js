@@ -1,5 +1,8 @@
 module.exports = {
   root: true,
+  parserOptions: {
+    sourceType: 'module',
+  },
   overrides: [
     {
       files: ['*.js', '*.cjs', '*.mjs'],
@@ -26,4 +29,4 @@ module.exports = {
       },
     },
   ],
-};
+}

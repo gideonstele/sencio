@@ -1,10 +1,7 @@
 {
   "recommendations": [
     "formulahendry.auto-rename-tag",
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
-    "firsttris.vscode-jest-runner",
-    "meganrogge.template-string-converter",
+    "rvest.vs-code-prettier-eslint",
     "unifiedjs.vscode-mdx"
   ]
 }

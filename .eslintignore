@@ -9,9 +9,6 @@ env/*
 **/node_modules/
 
 
-.eslintrc.js
-eslint.config.js
-
 prettier.config.js
 .prettierrc.js
 
