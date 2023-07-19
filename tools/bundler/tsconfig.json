@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "composite": true,
+    "resolveJsonModule": true
+  },
+  "include": ["./bundler.ts", "package.json"]
+}

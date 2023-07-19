@@ -3,10 +3,10 @@
  */
 module.exports = {
   tabWidth: 2,
-  semi: false,
+  semi: true,
   singleQuote: true,
   printWidth: 80,
-  trailingComma: 'es5',
+  trailingComma: 'all',
   bracketSpacing: true,
-  arrowParens: 'avoid'
-};
+  arrowParens: 'avoid',
+}

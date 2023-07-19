@@ -1,0 +1,6 @@
+{
+  "extends": "base-tsconfig/index.json",
+  "compilerOptions": {
+    "composite": true
+  }
+}
