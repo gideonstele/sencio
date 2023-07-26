@@ -1,6 +1,9 @@
 {
   "extends": "base-tsconfig/index.json",
   "compilerOptions": {
-    "composite": true
-  }
+    "composite": true,
+    "rootDir": ".",
+    "baseUrl": "."
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"]
 }

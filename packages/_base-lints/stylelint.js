@@ -2,7 +2,7 @@
  * @type {import('stylelint').Configuration')}
  */
 module.exports = {
-  extends: ['stylelint-config-standard'],
+  extends: [require.resolve('stylelint-config-standard')],
   rules: {
     'font-family-name-quotes': 'always-unless-keyword',
     'string-quotes': 'single',
@@ -26,7 +26,7 @@ module.exports = {
   overrides: [
     {
       files: ['*.scss', '**/*.scss'],
-      extends: ['stylelint-config-standard-scss'],
+      extends: [require.resolve('stylelint-config-standard-scss')],
     },
   ],
   defaultSeverity: 'warning',

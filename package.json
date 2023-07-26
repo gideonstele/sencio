@@ -5,7 +5,7 @@
   "description": "Breezy is a collection of React components for building web applications.",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "build": "turbo run build",
+    "build": "dotenv -- turbo run build",
     "clean": "pnpm clean:module && pnpm clean:dist",
     "clean:module": "pnpm -r exec -- rm -rf node_modules",
     "clean:dist": "pnpm -r exec -- rm -rf dist",
@@ -39,6 +39,7 @@
     "base-lints": "workspace:*",
     "commitlint": "^17.6.3",
     "cross-env": "^7.0.3",
+    "dotenv-cli": "^7.2.1",
     "husky": "^8.0.0",
     "is-ci": "^3.0.1",
     "lint-staged": "^13.2.2",

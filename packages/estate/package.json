@@ -4,22 +4,29 @@
   "private": true,
   "description": "",
   "type": "module",
+  "module": "./dist/main.js",
+  "exports": {
+    ".": {
+      "default": "./dist/main.js",
+      "types": "./dist/main.d.ts"
+    }
+  },
   "scripts": {
-    "build": "vite build"
+    "build": "tsup",
+    "dev": "tsup --watch --dev"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^17.0.0",
     "react-dom": "^18.0.0 || ^17.0.0"
   },
-  "dependencies": {},
   "devDependencies": {
     "@types/react": "~18.2.0",
     "@types/react-dom": "18.2.0",
     "base-lints": "workspace:*",
     "base-tsconfig": "workspace:*",
-    "bundler": "workspace:*",
+    "cross-env": "^7.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "vite": "^4.4.4"
+    "tsup": "^7.1.0"
   }
 }

@@ -2,4 +2,5 @@ packages:
   - 'packages/*'
   - 'examples/*'
   - 'tools/*'
+  - '.dev'
   - '!**/__test__/**'

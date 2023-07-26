@@ -13,6 +13,9 @@ module.exports = {
     node: true,
     'shared-node-browser': true,
   },
+  rules: {
+    'no-unused-vars': ['warn'],
+  },
   overrides: [
     {
       files: ['**/*.cjs?(x)', '**/*.cts?(x)'],

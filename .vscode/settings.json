@@ -20,5 +20,6 @@
   },
   "prettier.enable": true,
   "vs-code-prettier-eslint.prettierLast": true,
-  "cSpell.words": ["breezystack"]
+  "cSpell.words": ["breezystack"],
+  "stylelint.config": {}
 }
