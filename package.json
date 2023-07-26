@@ -5,8 +5,7 @@
   "description": "Breezy is a collection of React components for building web applications.",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "build": "tsx ./scripts/build.ts",
-    "build:all": "tsx ./scripts/build.ts --all",
+    "build": "turbo run build",
     "clean": "pnpm clean:module && pnpm clean:dist",
     "clean:module": "pnpm -r exec -- rm -rf node_modules",
     "clean:dist": "pnpm -r exec -- rm -rf dist",
@@ -29,6 +28,7 @@
     "eslint": "^8.40.0",
     "prettier": "^3",
     "stylelint": "^15.6.2",
+    "turbo": "^1.10.12",
     "typescript": "^5.0.4"
   },
   "devDependencies": {
