@@ -1,14 +1,29 @@
-import { createContext, memo, useContext, useEffect, useRef } from 'react';
+import {
+  Context,
+  ReactElement,
+  ReactNode,
+  memo,
+  useContext,
+  useEffect,
+  useRef,
+} from 'react';
 import {
   UseCreateFn,
   CreateContainerOptions,
   ProviderProps,
   ContainerConsumerProps,
+  SelectorHook,
+  Selector,
 } from '../type';
-import { EMPTY, EmptyType } from './utils';
+import { EMPTY, EmptyType, createContext, createUseFn } from './utils';
 
-export function createContainer<Value, Props extends Record<string, any>>(
-  createFn: UseCreateFn<Value, Props>,
+export function createContainer<
+  Value,
+  Props extends Record<string, any>,
+  S extends Selector<Value>[],
+>(
+  useCreateValue: UseCreateFn<Value, Props>,
+  selectors: S = [] as unknown as S,
   options: CreateContainerOptions<Value> = {},
 ) {
   const strict = options.strict || false;
@@ -17,41 +32,44 @@ export function createContainer<Value, Props extends Record<string, any>>(
     typeof options.memo === 'undefined' ? EMPTY : options.defaultValue
   ) as Value | typeof EMPTY;
 
-  const Context = createContext<Value | EmptyType>(defaultValue);
-  const displayName = createFn.name || 'CreateFn';
-  Context.displayName = `${displayName}Context`;
+  const RootContext = createContext<Value | EmptyType>(defaultValue);
+
+  const useValue = createUseFn(RootContext, strict);
+
+  const Contexts = [] as Context<any>[];
+
+  const hooks = [] as SelectorHook<any>[];
+
+  selectors.forEach(selector => {
+    const context = createContext(EMPTY, selector.name || 'Selector');
+    Contexts.push(context);
+    hooks.push(createUseFn(context, strict));
+  });
 
   function Provider({ params, children }: ProviderProps<Props>) {
-    const value = createFn(params || ({} as Props));
+    const value = useCreateValue(params || ({} as Props));
+
+    let cascadeProviders: ReactNode = children;
+
+    for (let i = 0; i < Contexts.length; i++) {
+      const Ctx = Contexts[i];
+      const selector = selectors[i] || (v => v);
+
+      cascadeProviders = (
+        <Ctx.Provider value={selector(value)}>{cascadeProviders}</Ctx.Provider>
+      );
+    }
+
     return (
-      <Context.Provider value={value || defaultValue}>
-        {children}
-      </Context.Provider>
+      <RootContext.Provider value={value || defaultValue}>
+        {cascadeProviders}
+      </RootContext.Provider>
     );
-  }
-
-  function useContainer() {
-    const isMounted = useRef(false);
-    const value = useContext(Context);
-
-    useEffect(() => {
-      if (value === EMPTY) {
-        if (isMounted.current && strict) {
-          throw new Error(
-            `${displayName} You should pass a default value when create the provider.`,
-          );
-        }
-        isMounted.current = true;
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    return value as Value;
   }
 
   function Consumer({ children }: ContainerConsumerProps<Value>) {
     return (
-      <Context.Consumer>
+      <RootContext.Consumer>
         {value => {
           if (value === EMPTY && strict) {
             throw new Error(
@@ -60,13 +78,11 @@ export function createContainer<Value, Props extends Record<string, any>>(
           }
           return children?.(value as Value);
         }}
-      </Context.Consumer>
+      </RootContext.Consumer>
     );
   }
 
-  return {
-    Provider: isMemo ? memo(Provider) : Provider,
-    Consumer,
-    useContainer,
-  };
+  const MemoProvider = isMemo ? memo(Provider) : Provider;
+
+  return [MemoProvider, useValue, Consumer, ...hooks] as const;
 }

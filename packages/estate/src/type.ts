@@ -23,3 +23,13 @@ export interface ContainerConsumerProps<Value> {
 export interface ContainerConsumerProps<Value> {
   children: (value: Value) => ReactNode;
 }
+
+export type Selector<Value, Result = any> = (value: Value) => Result;
+
+export type SelectorHook<Result = any> = () => Result;
+
+export type SelectHooks<Selectors> = {
+  [K in keyof Selectors]: () => Selectors[K] extends (...args: any) => infer R
+    ? R
+    : never;
+};

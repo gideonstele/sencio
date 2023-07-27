@@ -6,13 +6,13 @@ import {
   CreateContainerOptions,
 } from '../type';
 
-export type Dispatch<Value> = (prev: Value) => Value;
+export type Dispatch<Value> = (prev: Value) => void;
 
 export type CoupleItem<Value> = [Value, Dispatch<Value>];
 
 export type CreateCoupleFn<Value, Props extends object> =
-  | ((props: Props) => CoupleItem<Value | EmptyType>)
-  | (() => CoupleItem<Value | EmptyType>);
+  | ((props: Props) => [Value, Dispatch<Value>])
+  | (() => [Value, Dispatch<Value>]);
 
 export type CreateCoupleOption<Value> = CreateContainerOptions<Value>;
 
@@ -27,8 +27,8 @@ export function createDualContainer<Value, Props extends Record<string, any>>(
   ) as Value | EmptyType;
 
   const ValueContext = createContext<Value | EmptyType>(defaultValue);
-  const DispatchContext = createContext<Dispatch<Value | EmptyType>>(
-    () => defaultValue,
+  const DispatchContext = createContext<Dispatch<Value>>(
+    initial => defaultValue,
   );
 
   const name = useCoupleFn.name || 'DualContainer';
