@@ -6,6 +6,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "build": "dotenv -- turbo run build",
+    "dev": "dotenv -- turbo run dev",
     "clean": "pnpm clean:module && pnpm clean:dist",
     "clean:module": "pnpm -r exec -- rm -rf node_modules",
     "clean:dist": "pnpm -r exec -- rm -rf dist",
@@ -24,7 +25,6 @@
   },
   "homepage": "https://github.com/shijinyu/breezystack#readme",
   "dependencies": {
-    "env-cmd": "^10.1.0",
     "eslint": "^8.40.0",
     "prettier": "^3",
     "stylelint": "^15.6.2",

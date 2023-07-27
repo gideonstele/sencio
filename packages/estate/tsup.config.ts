@@ -2,9 +2,11 @@ import { defineConfig, Options } from 'tsup';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+console.log('isProduction', process.env.NODE_ENV);
+
 export default defineConfig(options => {
   return {
-    entryPoints: ['src/main.ts'],
+    entryPoints: ['src/main.ts', 'src/advanced.ts'],
     minify: isProduction,
     clean: !options.watch,
     format: ['iife', 'esm'],
@@ -18,6 +20,8 @@ export default defineConfig(options => {
         composite: false,
       },
     },
+    name: 'estate',
+    globalName: 'estate',
     outExtension(ctx) {
       if (ctx.format === 'cjs') {
         return {
