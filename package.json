@@ -12,7 +12,8 @@
     "clean:module": "pnpm -r exec -- rm -rf node_modules",
     "clean:dist": "pnpm -r exec -- rm -rf dist",
     "release": "echo \"todo...\" && exit 1",
-    "test": "echo \"todo...\" && exit 1"
+    "test": "echo \"todo...\" && exit 1",
+    "prepare": "husky"
   },
   "workspaces": [
     "packages/*"
