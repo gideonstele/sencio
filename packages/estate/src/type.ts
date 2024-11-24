@@ -1,5 +1,6 @@
-import { ReactNode } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { EmptyType } from './container/utils';
+import { ReactNode } from 'react';
 
 export type ProviderProps<Props extends Record<string, any>> = {
   params?: Props;
@@ -11,7 +12,7 @@ export type UseCreateFn<Value, Props extends Record<string, any>> =
   | (() => Value);
 
 export interface CreateContainerOptions<Value> {
-  strict?: boolean;
+  providerRequired?: boolean;
   memo?: boolean;
   defaultValue?: Value | EmptyType;
 }
@@ -24,7 +25,7 @@ export interface ContainerConsumerProps<Value> {
   children: (value: Value) => ReactNode;
 }
 
-export type Selector<Value, Result = any> = (value: Value) => Result;
+export type SelectFn<Value, Result = unknown> = (value: Value) => Result;
 
 export type SelectorHook<Result = any> = () => Result;
 
@@ -33,3 +34,15 @@ export type SelectHooks<Selectors> = {
     ? R
     : never;
 };
+
+export type TupleIndices<T extends readonly any[]> =
+  Extract<keyof T, `${number}`> extends `${infer N extends number}` ? N : never;
+
+export type SelectFnArray<
+  Fn extends SelectFn<any>,
+  Results extends readonly any[],
+> = {
+  [Index in TupleIndices<Results>]: Fn extends SelectFn<infer Value, any>
+    ? SelectFn<Value, Results[Index]>
+    : never;
+} & Array<SelectFn<any, any>>;

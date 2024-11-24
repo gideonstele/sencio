@@ -1,32 +1,25 @@
 import {
-  Context,
-  ReactElement,
-  ReactNode,
-  memo,
-  useContext,
-  useEffect,
-  useRef,
-} from 'react';
-import {
-  UseCreateFn,
+  ContainerConsumerProps,
   CreateContainerOptions,
   ProviderProps,
-  ContainerConsumerProps,
+  SelectFn,
+  SelectFnArray,
   SelectorHook,
-  Selector,
+  UseCreateFn,
 } from '../type';
+import { Context, ReactNode, memo } from 'react';
 import { EMPTY, EmptyType, createContext, createUseFn } from './utils';
 
 export function createContainer<
   Value,
   Props extends Record<string, any>,
-  S extends Selector<Value>[],
+  Results extends unknown[],
 >(
   useCreateValue: UseCreateFn<Value, Props>,
-  selectors: S = [] as unknown as S,
+  selectors: SelectFnArray<SelectFn<Value>, Results>,
   options: CreateContainerOptions<Value> = {},
 ) {
-  const strict = options.strict || false;
+  const providerRequired = options.providerRequired || false;
   const isMemo = typeof options.memo === 'undefined' ? true : options.memo;
   const defaultValue = (
     typeof options.memo === 'undefined' ? EMPTY : options.defaultValue
@@ -34,35 +27,38 @@ export function createContainer<
 
   const RootContext = createContext<Value | EmptyType>(defaultValue);
 
-  const useValue = createUseFn(RootContext, strict);
+  const useValue = createUseFn(RootContext, providerRequired) as () => Value;
 
-  const Contexts = [] as Context<any>[];
+  const Contexts = [] as Context<unknown>[];
 
   const hooks = [] as SelectorHook<any>[];
 
   selectors.forEach(selector => {
-    const context = createContext(EMPTY, selector.name || 'Selector');
+    const context = createContext(
+      EMPTY,
+      selector.name || 'Selector',
+    ) as unknown as Context<unknown>;
     Contexts.push(context);
-    hooks.push(createUseFn(context, strict));
+    hooks.push(createUseFn(context, providerRequired));
   });
 
   function Provider({ params, children }: ProviderProps<Props>) {
     const value = useCreateValue(params || ({} as Props));
 
-    let cascadeProviders: ReactNode = children;
+    let selectProviders: ReactNode = children;
 
     for (let i = 0; i < Contexts.length; i++) {
       const Ctx = Contexts[i];
-      const selector = selectors[i] || (v => v);
+      const selector = selectors[i];
 
-      cascadeProviders = (
-        <Ctx.Provider value={selector(value)}>{cascadeProviders}</Ctx.Provider>
+      selectProviders = (
+        <Ctx.Provider value={selector(value)}>{selectProviders}</Ctx.Provider>
       );
     }
 
     return (
       <RootContext.Provider value={value || defaultValue}>
-        {cascadeProviders}
+        {selectProviders}
       </RootContext.Provider>
     );
   }
@@ -71,7 +67,7 @@ export function createContainer<
     return (
       <RootContext.Consumer>
         {value => {
-          if (value === EMPTY && strict) {
+          if (value === EMPTY && providerRequired) {
             throw new Error(
               'You should pass a default value when create the provider.',
             );
@@ -84,5 +80,5 @@ export function createContainer<
 
   const MemoProvider = isMemo ? memo(Provider) : Provider;
 
-  return [MemoProvider, useValue, Consumer, ...hooks] as const;
+  return [MemoProvider, useValue, ...hooks, Consumer] as const;
 }

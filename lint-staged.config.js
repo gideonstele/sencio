@@ -1,4 +1,3 @@
-module.exports = {
-  'src/**/*.{ts,tsx}': 'pnpm run lint:fix',
-  '**/*.ts?(x)': () => 'pnpm run typecheck',
-}
+export default {
+  'packages/**/*.{ts,tsx}': 'eslint --fix", "prettier --write',
+};

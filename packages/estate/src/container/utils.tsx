@@ -19,14 +19,14 @@ export const createContext = <Value,>(
 
 export const createUseFn = <Value,>(
   context: Context<Value>,
-  strict = false,
+  providerRequired = false,
 ) => {
   return () => {
     const value = useContext(context);
 
-    if (value === EMPTY && strict) {
+    if (value === EMPTY && providerRequired) {
       throw new Error(
-        `You should wrap ${context.displayName} as a provider before you consume the value.`,
+        `You should wrap \`${context.displayName}\` as a provider before you consume the value.`,
       );
     }
 

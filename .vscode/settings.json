@@ -1,13 +1,11 @@
 {
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.fixAll.stylelint": true
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
   },
-  "[svg]": {
-    "editor.defaultFormatter": "jock.svg"
-  },
+
   "typescript.tsdk": "node_modules/typescript/lib",
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -19,7 +17,15 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "prettier.enable": true,
-  "vs-code-prettier-eslint.prettierLast": true,
+  "cSpell.diagnosticLevel": "Hint",
+  "cSpell.ignorePaths": [
+    "package-lock.json",
+    "node_modules",
+    "vscode-extension",
+    ".git/**",
+    ".vscode",
+    ".vscode-insiders"
+  ],
   "cSpell.words": ["breezystack"],
   "stylelint.config": {}
 }

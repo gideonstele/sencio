@@ -6,7 +6,7 @@ export type StateProvider<State> = (props: {
 }) => ReactNode;
 
 export interface CascadeContextOption {
-  noNesting?: boolean;
+  disallowCascading?: boolean;
 }
 
 export const createCascadeContext = <State,>(
@@ -20,25 +20,25 @@ export const createCascadeContext = <State,>(
   const NestingCheckerContext = createContext(false);
 
   const Provider: StateProvider<State> = ({ children, value }) => {
-    if (useContext(NestingCheckerContext) && option?.noNesting) {
+    if (useContext(NestingCheckerContext) && option?.disallowCascading) {
       throw new Error('CascadeContext cannot be nested.');
     }
 
-    const initialValue = useContext(StateContext);
+    const upperContextValue = useContext(StateContext);
     const state = useMemo(() => {
       if (typeof value === 'undefined') {
-        return initialValue;
+        return upperContextValue;
       }
 
       if (typeof value === 'object') {
         return {
-          ...initialValue,
+          ...upperContextValue,
           ...value,
         };
       }
 
       return value;
-    }, [initialValue, value]);
+    }, [upperContextValue, value]);
 
     return (
       <NestingCheckerContext.Provider value>
