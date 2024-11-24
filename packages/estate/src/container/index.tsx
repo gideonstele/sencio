@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ContainerConsumerProps,
   CreateContainerOptions,
   ProviderProps,
-  SelectFn,
   SelectFnArray,
   SelectorHook,
   UseCreateFn,
+  type SelectFn,
 } from '../type';
 import { Context, ReactNode, memo } from 'react';
 import { EMPTY, EmptyType, createContext, createUseFn } from './utils';
@@ -16,7 +17,7 @@ export function createContainer<
   Results extends unknown[],
 >(
   useCreateValue: UseCreateFn<Value, Props>,
-  selectors: SelectFnArray<SelectFn<Value>, Results>,
+  selectors: SelectFnArray<Value, Results>,
   options: CreateContainerOptions<Value> = {},
 ) {
   const providerRequired = options.providerRequired || false;
@@ -31,12 +32,12 @@ export function createContainer<
 
   const Contexts = [] as Context<unknown>[];
 
-  const hooks = [] as SelectorHook<any>[];
+  const hooks = [] as SelectorHook<unknown>[];
 
   selectors.forEach(selector => {
     const context = createContext(
       EMPTY,
-      selector.name || 'Selector',
+      (selector as SelectFn<Value>).name || 'Selector',
     ) as unknown as Context<unknown>;
     Contexts.push(context);
     hooks.push(createUseFn(context, providerRequired));
@@ -52,7 +53,9 @@ export function createContainer<
       const selector = selectors[i];
 
       selectProviders = (
-        <Ctx.Provider value={selector(value)}>{selectProviders}</Ctx.Provider>
+        <Ctx.Provider value={(selector as SelectFn<Value>)(value)}>
+          {selectProviders}
+        </Ctx.Provider>
       );
     }
 

@@ -2,7 +2,6 @@ import {
   Context,
   createContext as createReactContext,
   useContext,
-  useEffect,
 } from 'react';
 export const EMPTY: unique symbol = Symbol();
 export type EmptyType = typeof EMPTY;

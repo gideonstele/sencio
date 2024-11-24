@@ -35,14 +35,23 @@ export type SelectHooks<Selectors> = {
     : never;
 };
 
-export type TupleIndices<T extends readonly any[]> =
-  Extract<keyof T, `${number}`> extends `${infer N extends number}` ? N : never;
+/**
+ * @source https://github.com/ramda/types/blob/13d36d597c51793627a7b0dc0d83c62f1236029b/types/util/tools.d.ts#L441
+ * A homogeneous tuple of length `N`.
+ * @param T Type of every element of the tuple
+ * @param N Length of the tuple
+ */
+export type Tuple<T, N extends number> = N extends N
+  ? number extends N
+    ? T[]
+    : _TupleOf<T, N, []>
+  : never;
+type _TupleOf<T, N extends number, R extends unknown[]> = R['length'] extends N
+  ? R
+  : _TupleOf<T, N, [T, ...R]>;
 
-export type SelectFnArray<
-  Fn extends SelectFn<any>,
-  Results extends readonly any[],
-> = {
-  [Index in TupleIndices<Results>]: Fn extends SelectFn<infer Value, any>
-    ? SelectFn<Value, Results[Index]>
+export type SelectFnArray<Param, Results extends unknown[]> = Results extends []
+  ? []
+  : Results extends [infer R, ...infer Rs]
+    ? [SelectFn<Param, R>, ...SelectFnArray<Param, Rs>]
     : never;
-} & Array<SelectFn<any, any>>;
