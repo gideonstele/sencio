@@ -25,7 +25,7 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   {
     files: ['**/*.{ts,mts,cts,tsx}', '*/**/*.d.ts'],
-    ignores: ['.wxt/**/*', '.output/**/*', '.temp/**/*'],
+    ignores: ['**/dist/**/*', '**/.turbo/**/*', '**/.temp/**/*'],
     languageOptions: {
       parser: tsParser,
       ecmaVersion: 'latest',
@@ -50,7 +50,7 @@ export default tseslint.config(
   },
   {
     files: ['**/*.{js,mjs,ts,jsx,tsx}', '*/**/*.d.ts'],
-    ignores: ['.wxt/**/*', '.output/**/*', '.temp/**/*'],
+    ignores: ['**/dist/**/*', '**/.turbo/**/*', '**/.temp/**/*'],
     languageOptions: {
       ...reactPlugin.configs.flat.recommended.languageOptions,
       globals: {

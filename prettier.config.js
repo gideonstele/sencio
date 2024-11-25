@@ -10,10 +10,22 @@ const config = {
   trailingComma: 'all',
   bracketSpacing: true,
   arrowParens: 'avoid',
-  plugins: ['@trivago/prettier-plugin-sort-imports'],
-  importOrder: ['react|react-dom', '^@ui/(.*)$', '^[../](.*)$', '^[./]'],
-  importOrderSeparation: true,
-  importOrderSortSpecifiers: true,
+  plugins: ['@ianvs/prettier-plugin-sort-imports'],
+  importOrder: [
+    '<BUILTIN_MODULES>',
+    '',
+    'react-dom',
+    'react',
+    '<THIRD_PARTY_MODULES>',
+    '',
+    '^@ui/(.*)$',
+    '^[.]',
+    '^(?!.*[.]css$)[./].*$',
+    '.css$',
+  ],
+  importOrderParserPlugins: ['typescript', 'jsx'],
+  importOrderTypeScriptVersion: '5.0.0',
+  importOrderCaseSensitive: false,
 };
 
 export default config;
