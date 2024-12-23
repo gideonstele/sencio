@@ -1,0 +1,86 @@
+name: 'Build and deploy'
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  CI: true
+
+on:
+  push:
+    tags:
+      - 'release-*'
+      - 'major-*'
+      - 'minor-*'
+      - 'patch-*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - uses: actions/setup-node@v3
+        with:
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        shell: bash
+
+      - name: Determine tag
+        id: tag-params
+        run: |
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          else
+            if [ -z "${{ github.event.inputs.tag }}" ]; then
+              echo "No tag provided for manual trigger"
+              exit 1
+            else
+              echo "tag=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Get Build Mode
+        id: build-mode
+        shell: bash
+        run: |
+          if [[ "${{ steps.tag-params.outputs.tag }}" =~ (beta|alpha).* ]]; then
+            echo "mode=debug" >> $GITHUB_OUTPUT
+          else
+            echo "mode=production" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update version by increment
+        id: versioning
+        if: steps.tag-params.outputs.tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          bash ./scripts/versioning.sh "${{ steps.tag-params.outputs.tag }}"
+
+      - name: Build Package
+        run: pnpm build
+
+      # TODO: add publish and release

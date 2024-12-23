@@ -15,6 +15,9 @@
     "build": "cross-env NODE_ENV=production tsup",
     "dev": "cross-env NODE_ENV=production tsup --watch"
   },
+  "files": [
+    "dist"
+  ],
   "peerDependencies": {
     "react": "^18.0.0 || ^17.0.0",
     "react-dom": "^18.0.0 || ^17.0.0"

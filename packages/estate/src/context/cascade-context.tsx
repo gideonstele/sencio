@@ -1,9 +1,13 @@
-import { ReactNode, createContext, useContext, useMemo } from 'react';
+import { createContext, ReactNode, useContext, useMemo } from 'react';
 
-export type StateProvider<State> = (props: {
+interface StateProviderProps<State> {
   children?: ReactNode;
   value?: State;
-}) => ReactNode;
+}
+
+export type StateProvider<State> = (
+  props: StateProviderProps<State>,
+) => ReactNode;
 
 export interface CascadeContextOption {
   disallowCascading?: boolean;
@@ -19,7 +23,10 @@ export const createCascadeContext = <State,>(
 
   const NestingCheckerContext = createContext(false);
 
-  const Provider: StateProvider<State> = ({ children, value }) => {
+  const Provider: StateProvider<State> = ({
+    children,
+    value,
+  }: StateProviderProps<State>) => {
     if (useContext(NestingCheckerContext) && option?.disallowCascading) {
       throw new Error('CascadeContext cannot be nested.');
     }
