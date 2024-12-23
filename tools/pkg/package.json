@@ -4,9 +4,9 @@
   "bin": "./src/index.mjs",
   "module": "./src/index.mjs",
   "dependencies": {
-    "@types/yargs": "^17.0.24",
-    "chalk": "^5.0.1",
-    "fs-extra": "^10.1.0",
+    "@types/yargs": "^17.0.33",
+    "chalk": "^5.4.1",
+    "fs-extra": "^11.2.0",
     "mustache": "^4.2.0",
     "yargs": "^17.7.2"
   }

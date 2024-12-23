@@ -2,7 +2,22 @@
   "include": [],
   "references": [
     {
+      "path": "./tsconfig.node.json"
+    },
+    {
       "path": "./packages/estate"
+    },
+    {
+      "path": "./examples/estate-simple-counter/tsconfig.app.json"
+    },
+    {
+      "path": "./examples/estate-simple-counter/tsconfig.node.json"
+    },
+    {
+      "path": "./examples/estate-simple-selector/tsconfig.app.json"
+    },
+    {
+      "path": "./examples/estate-simple-selector/tsconfig.node.json"
     }
   ]
 }

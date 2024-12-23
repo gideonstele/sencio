@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
 
-import { createCombineContainer } from '../context/combine-context';
+import { createCombineContainer } from './combine';
 import { createContext } from './utils';
 
 type DispatchAction<State> = Dispatch<SetStateAction<State>>;
@@ -36,10 +36,10 @@ export function createStatePairContainer<State>(
   const ValueContext = createContext(value);
   const SetValueContext = createContext(setValue);
 
-  const CombinedProvider = createCombineContainer<[State, typeof setValue]>(
+  const CombinedProvider = createCombineContainer<[State, typeof setValue]>([
     [value, ValueContext],
     [setValue, SetValueContext],
-  );
+  ]);
 
   const useValue = () => value;
   const useSetValue = () => setValue;

@@ -1,0 +1,35 @@
+{
+  "dependencyTypes": [
+    "dev"
+  ],
+  "semverGroups": [
+    {
+      "range": "",
+      "dependencyTypes": [
+        "prod",
+        "resolutions",
+        "overrides",
+        "pnpmOverrides",
+        "local"
+      ],
+      "dependencies": [
+        "**"
+      ],
+      "packages": [
+        "**"
+      ]
+    },
+    {
+      "range": "",
+      "dependencyTypes": [
+        "dev"
+      ],
+      "dependencies": [
+        "**"
+      ],
+      "packages": [
+        "**"
+      ]
+    }
+  ]
+}

@@ -1,70 +1,75 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Context, ReactNode, memo } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any  */
+/*eslint-disable @typescript-eslint/no-empty-object-type */
+import { memo, ReactNode } from 'react';
+import {
+  createCombineProvider,
+  type CombineContextContainerArray,
+} from 'container/combine';
 
 import {
   ContainerConsumerProps,
   CreateContainerOptions,
   ProviderProps,
-  type SelectFn,
+  SelectFn,
   SelectFnArray,
   SelectorHook,
   UseCreateFn,
 } from '../type';
-import { EMPTY, EmptyType, createContext, createUseFn } from './utils';
+import { createContext, createUseFn, EMPTY, EmptyType } from './utils';
 
 export function createContainer<
   Value,
-  Props extends Record<string, any>,
-  Results extends unknown[],
+  Props extends Record<string, any> = {},
+  SelectFnResults extends unknown[] = [],
 >(
   useCreateValue: UseCreateFn<Value, Props>,
-  selectors?: SelectFnArray<Value, Results>,
+  selectorFns?: SelectFnArray<Value, SelectFnResults>,
   options: CreateContainerOptions<Value> = {},
 ) {
   const providerRequired = options.providerRequired || false;
   const isMemo = typeof options.memo === 'undefined' ? true : options.memo;
-  const defaultValue = (
-    typeof options.memo === 'undefined' ? EMPTY : options.defaultValue
-  ) as Value | typeof EMPTY;
+  const fallbackValue = options.fallbackValue ?? EMPTY;
 
-  const RootContext = createContext<Value | EmptyType>(defaultValue);
+  const RootContext = createContext<Value | EmptyType>(fallbackValue);
 
   const useValue = createUseFn(RootContext, providerRequired) as () => Value;
 
-  const Contexts = [] as Context<unknown>[];
+  const useSelectors = [] as [...SelectorHook<SelectFnResults>[]];
+  let SelectorsCombineProvider: (props: {
+    children?: ReactNode;
+    values?: any;
+  }) => ReactNode = ({ children }: { children?: ReactNode }) => <>{children}</>;
 
-  const hooks = [] as SelectorHook<unknown>[];
+  if (selectorFns && (selectorFns as any[]).length > 0) {
+    const SelectorContexts = [] as any[];
 
-  selectors?.forEach(selector => {
-    const context = createContext(
-      EMPTY,
-      (selector as SelectFn<Value>).name || 'Selector',
-    ) as unknown as Context<unknown>;
-    Contexts.push(context);
-    hooks.push(createUseFn(context, providerRequired));
-  });
+    for (let i = 0; i < (selectorFns as any[]).length; i++) {
+      const SelectorContext = createContext<unknown>(undefined);
+      const hook = createUseFn(
+        SelectorContext,
+        providerRequired,
+      ) as SelectorHook;
+      SelectorContexts.push(SelectorContext);
+      useSelectors.push(hook);
+    }
+
+    SelectorsCombineProvider = createCombineProvider(
+      SelectorContexts as CombineContextContainerArray<SelectFnResults>,
+    );
+  }
 
   function Provider({ params, children }: ProviderProps<Props>) {
     const value = useCreateValue(params || ({} as Props));
 
-    let selectProviders: ReactNode = children;
-
-    if (selectors && selectors?.length) {
-      for (let i = 0; i < Contexts.length; i++) {
-        const Ctx = Contexts[i];
-        const selector = selectors[i];
-
-        selectProviders = (
-          <Ctx.Provider value={(selector as SelectFn<Value>)(value)}>
-            {selectProviders}
-          </Ctx.Provider>
-        );
-      }
-    }
+    const selectors: SelectFnResults | undefined = (
+      (selectorFns || []) as any[]
+    ).map(fn => (fn as SelectFn<Value>)(value)) as SelectFnResults;
 
     return (
-      <RootContext.Provider value={value || defaultValue}>
-        {selectProviders}
+      <RootContext.Provider value={value || fallbackValue}>
+        <SelectorsCombineProvider values={selectors}>
+          {children}
+        </SelectorsCombineProvider>
       </RootContext.Provider>
     );
   }
@@ -84,7 +89,9 @@ export function createContainer<
     );
   }
 
-  const MemoProvider = isMemo ? memo(Provider) : Provider;
+  const MemoProvider = (isMemo ? memo(Provider) : Provider) as (
+    props: ProviderProps<Props>,
+  ) => JSX.Element;
 
-  return [MemoProvider, useValue, ...hooks, Consumer] as const;
+  return [MemoProvider, useValue, useSelectors, Consumer] as const;
 }

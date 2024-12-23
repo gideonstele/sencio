@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { EmptyType } from './container/utils';
 import { ReactNode } from 'react';
 
 export type ProviderProps<Props extends Record<string, any>> = {
@@ -14,7 +13,7 @@ export type UseCreateFn<Value, Props extends Record<string, any>> =
 export interface CreateContainerOptions<Value> {
   providerRequired?: boolean;
   memo?: boolean;
-  defaultValue?: Value | EmptyType;
+  fallbackValue?: Value;
 }
 
 export interface ContainerConsumerProps<Value> {
@@ -29,7 +28,7 @@ export type SelectFn<Value, Result = unknown> = (value: Value) => Result;
 
 export type SelectorHook<Result = any> = () => Result;
 
-export type SelectHooks<Selectors> = {
+export type SelectorHookTuples<Selectors> = {
   [K in keyof Selectors]: () => Selectors[K] extends (...args: any) => infer R
     ? R
     : never;
@@ -50,8 +49,7 @@ type _TupleOf<T, N extends number, R extends unknown[]> = R['length'] extends N
   ? R
   : _TupleOf<T, N, [T, ...R]>;
 
-export type SelectFnArray<Param, Results extends unknown[]> = Results extends []
-  ? []
-  : Results extends [infer R, ...infer Rs]
-    ? [SelectFn<Param, R>, ...SelectFnArray<Param, Rs>]
-    : never;
+export type SelectFnArray<Param, Results extends [...unknown[]]> = Tuple<
+  SelectFn<Param, Results[keyof Results]>,
+  Results['length']
+>;

@@ -1,0 +1,26 @@
+{
+  "name": "example-estate-simple-selector",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "example:dev": "vite",
+    "example:build": "tsc -b && vite build"
+  },
+  "dependencies": {
+    "@breezy/estate": "workspace:*",
+    "immer": "^10.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "use-immer": "^0.11.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@types/react": "^18.3.17",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react-swc": "^3.7.2",
+    "globals": "^15.14.0",
+    "typescript": "~5.7.2",
+    "vite": "^6.0.5"
+  }
+}

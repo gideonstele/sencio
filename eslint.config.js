@@ -1,8 +1,8 @@
+import reactPlugin from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
 import eslint from '@eslint/js';
 import globals from 'globals';
-import reactHooks from 'eslint-plugin-react-hooks';
-import reactPlugin from 'eslint-plugin-react';
-import tsParser from '@typescript-eslint/parser';
 import tseslint from 'typescript-eslint';
 
 /**
@@ -24,14 +24,44 @@ export default tseslint.config(
   },
   ...tseslint.configs.recommended,
   {
-    files: ['**/*.{ts,mts,cts,tsx}', '*/**/*.d.ts'],
+    files: ['**/*.{js,mjs,ts,jsx,tsx}', '*/**/*.d.ts'],
     ignores: ['**/dist/**/*', '**/.turbo/**/*', '**/.temp/**/*'],
     languageOptions: {
-      parser: tsParser,
-      ecmaVersion: 'latest',
-      sourceType: 'module',
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname,
+        project: [
+          './tsconfig.node.json',
+          './examples/*/tsconfig.app.json',
+          './examples/*/tsconfig.node.json',
+          './packages/*/tsconfig.json',
+          './packages/*/tsconfig.node.json',
+        ],
+      },
+      globals: {
+        ...globals.serviceworker,
+        ...globals.browser,
+      },
+    },
+    plugins: {
+      react: reactPlugin,
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
     },
     rules: {
+      ...reactPlugin.configs.recommended.rules,
+      ...reactPlugin.configs['jsx-runtime'].rules,
+      ...reactHooks.configs.recommended.rules,
+      'react-hooks/exhaustive-deps': [
+        'warn',
+        {
+          additionalHooks:
+            '(useIsomorphicLayoutEffect|useTrackedEffect|useDeepCompareEffect|useDeepCompareLayoutEffect|useAsyncEffect|useDebounceEffect|useUpdateEffect|useUpdateLayoutEffect)',
+        },
+      ],
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
@@ -47,33 +77,23 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': ['warn'],
       '@typescript-eslint/ban-ts-comment': ['warn'],
     },
-  },
-  {
-    files: ['**/*.{js,mjs,ts,jsx,tsx}', '*/**/*.d.ts'],
-    ignores: ['**/dist/**/*', '**/.turbo/**/*', '**/.temp/**/*'],
-    languageOptions: {
-      ...reactPlugin.configs.flat.recommended.languageOptions,
-      globals: {
-        ...globals.serviceworker,
-        ...globals.browser,
-      },
-    },
-    plugins: {
-      ...reactPlugin.configs.flat.recommended.plugins,
-      'react-hooks': reactHooks,
-    },
-    rules: {
-      ...reactHooks.configs.recommended.rules,
-      'react-hooks/exhaustive-deps': [
-        'warn',
-        {
-          additionalHooks:
-            '(useIsomorphicLayoutEffect|useTrackedEffect|useDeepCompareEffect|useDeepCompareLayoutEffect|useAsyncEffect|useDebounceEffect|useUpdateEffect|useUpdateLayoutEffect)',
-        },
-      ],
-    },
     settings: {
       react: { version: '18.3' },
+    },
+  },
+  {
+    files: [
+      '**/tsup.config.{js,ts}',
+      '**/vite.config.{js,ts}',
+      '**/vitesse.config.{js,ts}',
+      '**/tsup.config.*.{js,ts}',
+      '**/vite.config.*.{js,ts}',
+    ],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.nodeBuiltin,
+      },
     },
   },
   {

@@ -2,5 +2,5 @@ packages:
   - 'packages/*'
   - 'examples/*'
   - 'tools/*'
-  - '.dev'
+  - '.playground'
   - '!**/__test__/**'
