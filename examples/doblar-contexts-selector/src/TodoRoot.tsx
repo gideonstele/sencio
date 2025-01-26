@@ -2,8 +2,6 @@ import { useEffect, useRef } from 'react';
 
 import { TodoList } from './components/TodoList';
 import {
-  TodoListActions,
-  TodoList as TodoListType,
   useAddTodo,
   useAllTodoList,
   useNotCompletedTodoList,
@@ -12,9 +10,9 @@ import {
 export const TodoRoot = () => {
   const firstMount = useRef(true);
 
-  const addTodo = useAddTodo() as unknown as TodoListActions['add'];
-  const notCompletedList = useNotCompletedTodoList() as unknown as TodoListType;
-  const allList = useAllTodoList() as unknown as TodoListType;
+  const addTodo = useAddTodo();
+  const notCompletedList = useNotCompletedTodoList();
+  const allList = useAllTodoList();
 
   useEffect(() => {
     if (firstMount.current) {

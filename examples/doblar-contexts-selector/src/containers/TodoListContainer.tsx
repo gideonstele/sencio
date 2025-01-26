@@ -1,4 +1,4 @@
-import { createContainer } from '@breezy/estate';
+import { createContainer } from '@sencio/doblar-contexts';
 import { useImmer } from 'use-immer';
 
 export interface TodoItem {
@@ -74,9 +74,9 @@ export const [
     };
   },
   [
-    (value: TodoListHook) => value.list,
-    (value: TodoListHook) => value.list.filter(item => !item.completed),
-    (value: TodoListHook) => value.add,
+    value => value.list,
+    value => value.list.filter(item => !item.completed),
+    value => value.add,
   ],
   {
     providerRequired: true,

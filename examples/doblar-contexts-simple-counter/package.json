@@ -1,5 +1,5 @@
 {
-  "name": "example-estate-simple-selector",
+  "name": "example-estate-simple-counter",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,11 +8,9 @@
     "example:build": "tsc -b && vite build"
   },
   "dependencies": {
-    "@breezy/estate": "workspace:*",
-    "immer": "^10.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "use-immer": "^0.11.0"
+    "@sencio/doblar-contexts": "workspace:*"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
