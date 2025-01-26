@@ -1,7 +1,7 @@
 {
-  "name": "@breezy/estate",
+  "name": "@sencio/doblar-contexts",
   "version": "0.0.1",
-  "private": true,
+  "license": "MIT",
   "description": "",
   "type": "module",
   "module": "./dist/main.js",
@@ -16,8 +16,15 @@
     "dev": "cross-env NODE_ENV=production tsup --watch"
   },
   "files": [
-    "dist"
+    "package.json",
+    "dist",
+    "README.md",
+    "LICENSE",
+    "tsconfig.json"
   ],
+  "volta": {
+    "extends": "../../package.json"
+  },
   "peerDependencies": {
     "react": "^18.0.0 || ^17.0.0",
     "react-dom": "^18.0.0 || ^17.0.0"

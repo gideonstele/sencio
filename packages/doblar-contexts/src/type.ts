@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ReactNode } from 'react';
 
@@ -24,7 +25,9 @@ export interface ContainerConsumerProps<Value> {
   children: (value: Value) => ReactNode;
 }
 
-export type SelectFn<Value, Result = unknown> = (value: Value) => Result;
+export type ContainerConsumer<Value> = (
+  props: ContainerConsumerProps<Value>,
+) => ReactNode;
 
 export type SelectorHook<Result = any> = () => Result;
 
@@ -34,22 +37,17 @@ export type SelectorHookTuples<Selectors> = {
     : never;
 };
 
-/**
- * @source https://github.com/ramda/types/blob/13d36d597c51793627a7b0dc0d83c62f1236029b/types/util/tools.d.ts#L441
- * A homogeneous tuple of length `N`.
- * @param T Type of every element of the tuple
- * @param N Length of the tuple
- */
-export type Tuple<T, N extends number> = N extends N
-  ? number extends N
-    ? T[]
-    : _TupleOf<T, N, []>
-  : never;
-type _TupleOf<T, N extends number, R extends unknown[]> = R['length'] extends N
-  ? R
-  : _TupleOf<T, N, [T, ...R]>;
+export type SelectFn<Value, Result = unknown> = (value: Value) => Result;
 
-export type SelectFnArray<Param, Results extends [...unknown[]]> = Tuple<
-  SelectFn<Param, Results[keyof Results]>,
-  Results['length']
->;
+export type SelectFnArray<
+  Param,
+  Results extends [...unknown[]],
+> = Results['length'] extends 0
+  ? []
+  : Results extends [infer R, ...infer Rest]
+    ? [SelectFn<Param, R>, ...SelectFnArray<Param, Rest>]
+    : never;
+
+export type ContainerProvider<Value extends Record<string, any> = {}> = (
+  props: ProviderProps<Value>,
+) => JSX.Element;

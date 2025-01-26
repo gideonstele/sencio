@@ -7,12 +7,13 @@ import {
 } from 'container/combine';
 
 import {
+  ContainerConsumer,
   ContainerConsumerProps,
+  ContainerProvider,
   CreateContainerOptions,
   ProviderProps,
   SelectFn,
   SelectFnArray,
-  SelectorHook,
   UseCreateFn,
 } from '../type';
 import { createContext, createUseFn, EMPTY, EmptyType } from './utils';
@@ -34,7 +35,7 @@ export function createContainer<
 
   const useValue = createUseFn(RootContext, providerRequired) as () => Value;
 
-  const useSelectors = [] as [...SelectorHook<SelectFnResults>[]];
+  const useSelectors = [] as SelectFnArray<void, SelectFnResults>;
   let SelectorsCombineProvider: (props: {
     children?: ReactNode;
     values?: any;
@@ -45,12 +46,9 @@ export function createContainer<
 
     for (let i = 0; i < (selectorFns as any[]).length; i++) {
       const SelectorContext = createContext<unknown>(undefined);
-      const hook = createUseFn(
-        SelectorContext,
-        providerRequired,
-      ) as SelectorHook;
+      const hook = createUseFn(SelectorContext, providerRequired);
       SelectorContexts.push(SelectorContext);
-      useSelectors.push(hook);
+      (useSelectors as any[]).push(hook);
     }
 
     SelectorsCombineProvider = createCombineProvider(
@@ -61,13 +59,13 @@ export function createContainer<
   function Provider({ params, children }: ProviderProps<Props>) {
     const value = useCreateValue(params || ({} as Props));
 
-    const selectors: SelectFnResults | undefined = (
+    const selectedValues: SelectFnResults | undefined = (
       (selectorFns || []) as any[]
     ).map(fn => (fn as SelectFn<Value>)(value)) as SelectFnResults;
 
     return (
       <RootContext.Provider value={value || fallbackValue}>
-        <SelectorsCombineProvider values={selectors}>
+        <SelectorsCombineProvider values={selectedValues}>
           {children}
         </SelectorsCombineProvider>
       </RootContext.Provider>
@@ -93,5 +91,10 @@ export function createContainer<
     props: ProviderProps<Props>,
   ) => JSX.Element;
 
-  return [MemoProvider, useValue, useSelectors, Consumer] as const;
+  return [MemoProvider, useValue, useSelectors, Consumer] as [
+    ContainerProvider<Props>,
+    SelectFn<void, Value>,
+    SelectFnArray<void, SelectFnResults>,
+    ContainerConsumer<Value>,
+  ];
 }
