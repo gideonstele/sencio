@@ -5,7 +5,7 @@
       "path": "./tsconfig.node.json"
     },
     {
-      "path": "./packages/estate"
+      "path": "./packages/doblar-contexts"
     },
     {
       "path": "./examples/estate-simple-counter/tsconfig.app.json"

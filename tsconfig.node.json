@@ -26,6 +26,7 @@
     "lint-staged.config.js",
     "prettier.config.js",
     "commitlint.config.js",
-    "tsup.config.ts"
+    "tsup.config.ts",
+    "./tools/pkg/src/**/*.mjs"
   ]
 }

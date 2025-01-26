@@ -1,8 +1,8 @@
 {
-  "name": "breezystack",
+  "name": "sencio",
   "version": "0.0.1",
   "private": true,
-  "description": "Breezy is a collection of React components for building web applications.",
+  "description": "sencio is a collection of React components for building web applications.",
   "type": "module",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
@@ -18,15 +18,14 @@
   "workspaces": [
     "packages/*"
   ],
-  "license": "LGPL-3.0-only",
   "repository": {
     "type": "git",
-    "url": "https://github.com/shijinyu/breezystack.git"
+    "url": "https://github.com/shijinyu/sencio.git"
   },
   "bugs": {
-    "url": "https://github.com/shijinyu/breezystack/issues"
+    "url": "https://github.com/shijinyu/sencio/issues"
   },
-  "homepage": "https://github.com/shijinyu/breezystack#readme",
+  "homepage": "https://github.com/shijinyu/sencio#readme",
   "devDependencies": {
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
@@ -72,9 +71,9 @@
   "engines": {
     "node": "20"
   },
-  "packageManager": "pnpm@9.15.1",
+  "packageManager": "pnpm@9.15.4",
   "volta": {
     "node": "20.4.0",
-    "pnpm": "9.15.1"
+    "pnpm": "9.15.4"
   }
 }

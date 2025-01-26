@@ -31,6 +31,8 @@ export default tseslint.config(
         tsconfigRootDir: import.meta.dirname,
         project: [
           './tsconfig.node.json',
+          './.dev/tsconfig.json',
+          './.dev/tsconfig.node.json',
           './examples/*/tsconfig.app.json',
           './examples/*/tsconfig.node.json',
           './packages/*/tsconfig.json',
@@ -88,6 +90,7 @@ export default tseslint.config(
       '**/vitesse.config.{js,ts}',
       '**/tsup.config.*.{js,ts}',
       '**/vite.config.*.{js,ts}',
+      '**/tools/pkg/src/**/*.mjs',
     ],
     languageOptions: {
       globals: {

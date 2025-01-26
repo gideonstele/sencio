@@ -170,3 +170,5 @@ dist/*
 
 .turbo
 .dev/*
+
+.playground/*

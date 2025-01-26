@@ -84,45 +84,11 @@ importers:
         specifier: ^8.18.1
         version: 8.18.1(eslint@9.17.0(jiti@2.4.2))(typescript@5.7.2)
 
-  examples/estate-simple-counter:
+  examples/doblar-contexts-selector:
     dependencies:
-      '@breezy/estate':
+      '@sencio/doblar-contexts':
         specifier: workspace:*
-        version: link:../../packages/estate
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-    devDependencies:
-      '@eslint/js':
-        specifier: ^9.17.0
-        version: 9.17.0
-      '@types/react':
-        specifier: ^18.3.17
-        version: 18.3.18
-      '@types/react-dom':
-        specifier: ^18.3.5
-        version: 18.3.5(@types/react@18.3.18)
-      '@vitejs/plugin-react-swc':
-        specifier: ^3.7.2
-        version: 3.7.2(vite@6.0.5(@types/node@22.10.2)(jiti@2.4.2)(yaml@2.6.1))
-      globals:
-        specifier: ^15.14.0
-        version: 15.14.0
-      typescript:
-        specifier: ~5.7.2
-        version: 5.7.2
-      vite:
-        specifier: ^6.0.5
-        version: 6.0.5(@types/node@22.10.2)(jiti@2.4.2)(yaml@2.6.1)
-
-  examples/estate-simple-selector:
-    dependencies:
-      '@breezy/estate':
-        specifier: workspace:*
-        version: link:../../packages/estate
+        version: link:../../packages/doblar-contexts
       immer:
         specifier: ^10.1.1
         version: 10.1.1
@@ -158,9 +124,43 @@ importers:
         specifier: ^6.0.5
         version: 6.0.5(@types/node@22.10.2)(jiti@2.4.2)(yaml@2.6.1)
 
+  examples/doblar-contexts-simple-counter:
+    dependencies:
+      '@sencio/doblar-contexts':
+        specifier: workspace:*
+        version: link:../../packages/doblar-contexts
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+    devDependencies:
+      '@eslint/js':
+        specifier: ^9.17.0
+        version: 9.17.0
+      '@types/react':
+        specifier: ^18.3.17
+        version: 18.3.18
+      '@types/react-dom':
+        specifier: ^18.3.5
+        version: 18.3.5(@types/react@18.3.18)
+      '@vitejs/plugin-react-swc':
+        specifier: ^3.7.2
+        version: 3.7.2(vite@6.0.5(@types/node@22.10.2)(jiti@2.4.2)(yaml@2.6.1))
+      globals:
+        specifier: ^15.14.0
+        version: 15.14.0
+      typescript:
+        specifier: ~5.7.2
+        version: 5.7.2
+      vite:
+        specifier: ^6.0.5
+        version: 6.0.5(@types/node@22.10.2)(jiti@2.4.2)(yaml@2.6.1)
+
   packages/_base-tsconfig: {}
 
-  packages/estate:
+  packages/doblar-contexts:
     devDependencies:
       '@types/react':
         specifier: ~18.2.0
@@ -2015,10 +2015,6 @@ packages:
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
-
-  lilconfig@3.1.2:
-    resolution: {integrity: sha512-eop+wDAvpItUys0FWkHIKeC9ybYrTGbU41U5K7+bttZZeohvnY7M9dZ5kB21GNWiFT2q1OoPTvncPCgSOVO5ow==}
-    engines: {node: '>=14'}
 
   lilconfig@3.1.3:
     resolution: {integrity: sha512-/vlFKAoH5Cgt3Ie+JLhRbwOsCQePABiU3tJ1egGvyQ+33R/vcwM2Zl2QR/LzjsBeItPt3oSVXapn+m4nQDvpzw==}
@@ -4782,8 +4778,6 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
 
-  lilconfig@3.1.2: {}
-
   lilconfig@3.1.3: {}
 
   lines-and-columns@1.2.4: {}
@@ -5094,7 +5088,7 @@ snapshots:
 
   postcss-load-config@6.0.1(jiti@2.4.2)(postcss@8.4.49)(yaml@2.6.1):
     dependencies:
-      lilconfig: 3.1.2
+      lilconfig: 3.1.3
     optionalDependencies:
       jiti: 2.4.2
       postcss: 8.4.49
@@ -5595,7 +5589,7 @@ snapshots:
       cac: 6.7.14
       chokidar: 4.0.3
       consola: 3.3.0
-      debug: 4.3.7
+      debug: 4.4.0
       esbuild: 0.24.2
       joycon: 3.1.1
       picocolors: 1.1.1

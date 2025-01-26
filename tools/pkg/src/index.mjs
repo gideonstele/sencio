@@ -1,10 +1,11 @@
 import path from 'node:path';
+
 import fs from 'fs-extra';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
+import { createEntry, createPackage } from './create-package.mjs';
 import { resolveToPackages } from './utils.mjs';
-import { createPackage, createEntry } from './create-package.mjs';
 
 /**
  * @typedef {{ name: string; desc?: string; isPrivate: boolean; isNamespace?: boolean }} Option
@@ -13,7 +14,7 @@ import { createPackage, createEntry } from './create-package.mjs';
 function createProject(options) {
   const { name, desc, isPrivate, isNamespace } = options;
   const dir = resolveToPackages(name);
-  const namespacedName = isNamespace ? `@breezy\/${name}` : name;
+  const namespacedName = isNamespace ? `@sencio/${name}` : name;
 
   const pkg = createPackage({
     name: namespacedName,
