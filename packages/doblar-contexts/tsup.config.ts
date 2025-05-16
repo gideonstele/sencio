@@ -6,7 +6,7 @@ console.log('isProduction', process.env.NODE_ENV);
 
 export default defineConfig(options => {
   return {
-    entryPoints: ['src/main.ts', 'src/advanced.ts'],
+    entryPoints: ['src/main.ts'],
     minify: isProduction,
     clean: !options.watch,
     format: ['iife', 'esm'],
