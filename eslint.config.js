@@ -47,7 +47,6 @@ export default tseslint.config(
     plugins: {
       react: reactPlugin,
       'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
     },
     rules: {
       ...reactPlugin.configs.recommended.rules,
@@ -60,10 +59,7 @@ export default tseslint.config(
             '(useIsomorphicLayoutEffect|useTrackedEffect|useDeepCompareEffect|useDeepCompareLayoutEffect|useAsyncEffect|useDebounceEffect|useUpdateEffect|useUpdateLayoutEffect)',
         },
       ],
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
@@ -80,7 +76,19 @@ export default tseslint.config(
       '@typescript-eslint/ban-ts-comment': ['warn'],
     },
     settings: {
-      react: { version: '18.3' },
+      react: { version: '19.1.0' },
+    },
+  },
+  {
+    files: ['**/examples/**/*.{js,ts,jsx,tsx}'],
+    plugins: {
+      'react-refresh': reactRefresh,
+    },
+    rules: {
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
     },
   },
   {
