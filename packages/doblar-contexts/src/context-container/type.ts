@@ -6,8 +6,8 @@ export type HookFnContainer<Params extends object, ReturnValue> = (
 
 export interface CreateContainerOptions<ReturnValue> {
   providerWrapperRequired?: boolean;
-  memoize?: boolean;
   fallbackValue?: ReturnValue;
+  isEqual?: (a: unknown, b: unknown) => boolean;
 }
 
 export interface UseIt<ReturnValue> {
